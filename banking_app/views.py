@@ -4,16 +4,10 @@ from rest_framework import  status
 from .serializers import BankSerializer
 from .models import Bank
 
-@api_view(['GET','POST'])
+@api_view(['GET'])
 def bank_view(request):
     if request.method=='GET':
-        bank = Bank.object.all()
+        bank = Bank.objects.all()
         serializer = BankSerializer(bank,many=True)
         return Response(serializer.data)
-    elif request.method=="POST":
-        serializer = BankSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
 
