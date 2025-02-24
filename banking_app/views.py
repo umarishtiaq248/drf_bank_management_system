@@ -17,6 +17,6 @@ class AccountListApiView(APIView):
     http_method_names = ['get']
     def get(self,request):
         user_name = request.GET.get('name','')
-        account_qs = Account.objects.filter(user_name__iexact=user_name)
+        account_qs = Account.objects.filter(user_name__icontains=user_name)
         serializer = AccountSerializer(account_qs, many=True)
         return  Response(serializer.data)
