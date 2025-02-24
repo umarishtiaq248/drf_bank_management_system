@@ -1,7 +1,6 @@
-from django.contrib import admin
-from django.urls import path,include
+from django.urls import path
+from .views import BankListApiView
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("",include('banking_app.urls')),
+    path('api/bank-list/',BankListApiView.as_view(),name='bank_list')
 ]
