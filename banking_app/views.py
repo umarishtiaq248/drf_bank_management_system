@@ -4,10 +4,10 @@ from  rest_framework.permissions import AllowAny
 from .serializers import BankSerializer
 from .models import Bank
 
-class BankView(APIView):
+class BankListApiView(APIView):
     permission_classes = [AllowAny]
     http_method_names = ['get']
     def get(self,request):
-        list_of_bank = Bank.objects.all()
-        serializer = BankSerializer(list_of_bank,many=True)
+        bank_qs = Bank.objects.all()
+        serializer = BankSerializer(bank_qs,many=True)
         return Response(serializer.data)
