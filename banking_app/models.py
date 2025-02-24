@@ -6,3 +6,11 @@ class Bank(models.Model):
 
     def __str__(self):
         return self.bank_name
+
+class Account(models.Model):
+    user_name = models.CharField(max_length=128)
+    account_balance = models.FloatField()
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="accounts")
+
+    def __str__(self):
+        return f"{self.user_name}"
