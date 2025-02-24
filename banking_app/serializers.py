@@ -7,6 +7,7 @@ class BankSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class AccountSerializer(serializers.ModelSerializer):
+    bank = BankSerializer()
     class Meta:
         model = Account
         fields = "__all__"
