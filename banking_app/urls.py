@@ -1,7 +1,11 @@
-from django.urls import path
+from django.urls import path,include
 from .views import BankListApiView,AccountListApiView
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register('bank-list',BankListApiView,basename='bank_list')
+router.register('account-list',AccountListApiView,basename='account_list')
 
 urlpatterns = [
-    path('api/bank-list/',BankListApiView.as_view(),name='bank_list'),
-    path('api/account-list/',AccountListApiView.as_view(),name='account_list')
+    path('api/',include(router.urls)),
 ]
