@@ -22,6 +22,8 @@ class AccountListApiView(APIView):
             account_qs = Account.objects.filter(user_name__icontains=user_name)
             serializer = AccountSerializer(account_qs, many=True)
             return Response(serializer.data)
+        else:
+            return Response({"message": "No user name provided"}, status=400)
 
 class BankListViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
@@ -37,3 +39,5 @@ class AccountListViewSet(viewsets.ModelViewSet):
         user_name = self.request.GET.get('name')
         if user_name:
             return Account.objects.filter(user_name__icontains=user_name)
+        else:
+            return Response({"message": "No user name provided"}, status=400)
