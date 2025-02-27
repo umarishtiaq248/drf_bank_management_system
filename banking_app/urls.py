@@ -3,11 +3,13 @@ from . import views
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('bank-list/viewset',views.BankListViewSet,basename='bank_list-viewset')
-router.register('account-list/viewset',views.AccountListViewSet,basename='account_list-viewset')
+router.register('bank-list/viewset',views.BankListViewSet,basename='bank-list-viewset')
+router.register('account-list/viewset',views.AccountListViewSet,basename='account-list-viewset')
 
 urlpatterns = [
     path('api/',include(router.urls)),
-    path('api/bank-list/apiview/',views.BankListApiView.as_view(),name='bank_list-apiview'),
-    path('api/account-list/apiview/',views.AccountListApiView.as_view(),name='account_list-apiview')
+    path('api/bank-list/apiview/',views.BankListApiView.as_view(),name='bank-list-apiview'),
+    path('api/account-list/apiview/',views.AccountListApiView.as_view(),name='account-list-apiview'),
+    path('api/bank-list/generic_apiview/',views.BankListGenericApiview.as_view(),name='bank-list-generic_apiview'),
+    path('api/account-list/generic_apiview/',views.AccountListGenericApiview.as_view(),name='account-list-generic_apiview')
 ]
