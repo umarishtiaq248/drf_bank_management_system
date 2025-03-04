@@ -1,4 +1,6 @@
 from django.db import models
+
+
 class Bank(models.Model):
     bank_name = models.CharField(max_length=128)
     branch_name = models.CharField(max_length=128)
@@ -6,6 +8,7 @@ class Bank(models.Model):
 
     def __str__(self):
         return self.bank_name
+
 
 class Account(models.Model):
     user_name = models.CharField(max_length=128)

@@ -1,14 +1,18 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import  viewsets,generics,filters
-from .serializers import BankSerializer,AccountSerializer
-from .models import Bank,Account
+from rest_framework import viewsets, generics, filters
+from .serializers import BankSerializer, AccountSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from .models import Bank, Account
+
 
 class BankListApiView(APIView):
-    def get (self,request):
+    def get(self, request):
         bank_qs = Bank.objects.all()
-        serializer = BankSerializer(bank_qs,many=True)
+        serializer = BankSerializer(bank_qs, many=True)
         return Response(serializer.data)
+
 
 class AccountListApiView(APIView):
     def get(self, request):
@@ -22,6 +26,7 @@ class AccountListApiView(APIView):
             serializer = AccountSerializer(queryset, many=True)
             return Response(serializer.data)
 
+
 class BankListViewSet(viewsets.ModelViewSet):
     queryset = Bank.objects.all()
     serializer_class = BankSerializer
@@ -29,6 +34,7 @@ class BankListViewSet(viewsets.ModelViewSet):
 class AccountListViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
     queryset = Account.objects.all()
+
     def get_queryset(self):
         user_name = self.request.query_params.get('name')
         if user_name:
@@ -36,9 +42,11 @@ class AccountListViewSet(viewsets.ModelViewSet):
         else:
             return self.queryset
 
+
 class BankListGenericApiview(generics.ListAPIView):
     queryset = Bank.objects.all()
     serializer_class = BankSerializer
+
 
 class AccountListGenericApiview(generics.ListAPIView):
     queryset = Account.objects.all()
