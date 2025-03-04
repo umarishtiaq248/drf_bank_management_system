@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets, generics, filters
 from .serializers import BankSerializer, AccountSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from .models import Bank, Account
 
 
@@ -28,7 +30,6 @@ class AccountListApiView(APIView):
 class BankListViewSet(viewsets.ModelViewSet):
     queryset = Bank.objects.all()
     serializer_class = BankSerializer
-
 
 class AccountListViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer

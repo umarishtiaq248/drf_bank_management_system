@@ -24,7 +24,7 @@ if not SECRET_KEY or not isinstance(SECRET_KEY, str) or len(SECRET_KEY) < 32:
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'authorization.CustomUser'
 # Application definition
 
 INSTALLED_APPS = [
@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "banking_app",
+    "authorization",
     "rest_framework",
     "rest_framework.authtoken",
 ]
@@ -52,6 +53,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Secure by default
+    ]
 }
 ROOT_URLCONF = "drf_bank_management_system.urls"
 
