@@ -1,5 +1,5 @@
 from django.db import models
-
+from authorization.models import CustomUser
 
 class Bank(models.Model):
     bank_name = models.CharField(max_length=128)
@@ -11,9 +11,8 @@ class Bank(models.Model):
 
 
 class Account(models.Model):
-    user_name = models.CharField(max_length=128)
     account_balance = models.FloatField()
-    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="accounts")
-
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="banks")
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name='users',null=True)
     def __str__(self):
-        return f"{self.user_name}"
+        return f"{self.user.first_name} {self.user.last_name}"

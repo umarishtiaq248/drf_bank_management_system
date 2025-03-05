@@ -16,7 +16,7 @@ class BankListApiView(APIView):
 
 class AccountListApiView(APIView):
     def get(self, request):
-        queryset = Account.objects.all()
+        queryset = Account.objects.filter(user=request.user)
         user_name = self.request.query_params.get('name')
         if user_name:
             account_qs = queryset.filter(user_name__icontains=user_name)
@@ -52,4 +52,4 @@ class AccountListGenericApiview(generics.ListAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['user_name']
+    search_fields = ['user__first_name','user__last_name','user__username']
