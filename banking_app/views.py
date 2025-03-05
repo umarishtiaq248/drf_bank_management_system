@@ -53,3 +53,14 @@ class AccountListGenericApiview(generics.ListAPIView):
     serializer_class = AccountSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['user__first_name','user__last_name','user__username']
+
+class RequestAccount(generics.ListAPIView):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
+    def list(self, request, *args, **kwargs):
+        user = self.request.user
+        queryset = self.queryset.filter(user=user)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
