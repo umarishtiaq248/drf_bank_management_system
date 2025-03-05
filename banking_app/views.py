@@ -60,5 +60,7 @@ class RequestAccount(generics.ListAPIView):
         user = self.request.user
         queryset = Account.objects.filter(user=user)
         return queryset
+class AddBank(generics.CreateAPIView):
+    serializer_class = BankSerializer
 
 
