@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets, generics, filters
 from .serializers import BankSerializer, AccountSerializer
+from authorization.serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from .models import Bank, Account
@@ -60,7 +61,26 @@ class RequestAccount(generics.ListAPIView):
         user = self.request.user
         queryset = Account.objects.filter(user=user)
         return queryset
-class AddBank(generics.CreateAPIView):
+class CreateBank(generics.CreateAPIView):
     serializer_class = BankSerializer
+class CreateAccount(generics.CreateAPIView):
+    serializer_class = AccountSerializer
+    def post(self, request, *args, **kwargs):
+        account_balance = request.data.get('account_balance')
+        user = self.request.user
+        bank = Bank.objects.filter(bank_name = 'UBL').get()
 
+        account = Account(
+            user = user,
+            bank = bank,
+            account_balance = account_balance
+        )
+        serializer = AccountSerializer(account)
+        account.save()
+        # response_data = {
+        #     "user": UserSerializer(account.user).data,
+        #     "bank": BankSerializer(account.bank).data,
+        #     "balance": account.account_balance
+        # }
+        return Response(serializer.data, status=201)
 

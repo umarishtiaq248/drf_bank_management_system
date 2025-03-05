@@ -12,7 +12,7 @@ class Bank(models.Model):
 
 class Account(models.Model):
     account_balance = models.FloatField()
-    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="banks")
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="banks",null=True)
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name='users',null=True)
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
