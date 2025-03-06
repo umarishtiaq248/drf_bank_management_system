@@ -10,24 +10,36 @@ class BankSerializer(serializers.ModelSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
-    bank_id = serializers.PrimaryKeyRelatedField(
-        queryset=Bank.objects.all(),
-        source='bank',
-        write_only=True
-    )
     bank = BankSerializer(read_only=True)
     user = UserSerializer(read_only=True)
+
 
     class Meta:
         model = Account
         fields = "__all__"
 
-    def create(self, validated_data):
-        user = self.context['request'].user
-        validated_data['user'] = user
-        return Account.objects.create(**validated_data)
+class CreateAccountSerialzer(serializers.ModelSerializer):
+    bank = BankSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
 
-    def validate_bank_id(self, value):
-        if not Bank.objects.filter(id=value.id).exists():
-            raise serializers.ValidationError("Bank does not exist")
-        return value
+
+    class Meta:
+        model = Account
+        fields = "__all__"
+
+
+    def get_user(self):
+        return self.context['request'].user
+
+    def get_bank(self):
+        bank_id = self.initial_data['bank_id']
+        try:
+            bank = Bank.objects.get(id= bank_id)
+        except Bank.DoesNotExist:
+            raise serializers.ValidationError(f"Bank with id {bank_id} does not exist")
+        return bank
+
+    def create(self, validated_data):
+        validated_data['bank'] = self.get_bank()
+        validated_data['user'] = self.get_user()
+        return Account.objects.create(**validated_data)

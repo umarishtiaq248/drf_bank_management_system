@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets, generics, filters
-from .serializers import BankSerializer, AccountSerializer
+from . import serializers
 from authorization.serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
@@ -11,7 +11,7 @@ from .models import Bank, Account
 class BankListApiView(APIView):
     def get(self, request):
         bank_qs = Bank.objects.all()
-        serializer = BankSerializer(bank_qs, many=True)
+        serializer = serializers.BankSerializer(bank_qs, many=True)
         return Response(serializer.data)
 
 
@@ -21,20 +21,20 @@ class AccountListApiView(APIView):
         user_name = self.request.query_params.get('name')
         if user_name:
             account_qs = queryset.filter(user_name__icontains=user_name)
-            serializer = AccountSerializer(account_qs, many=True)
+            serializer = serializers.AccountSerializer(account_qs, many=True)
             return Response(serializer.data)
         else:
-            serializer = AccountSerializer(queryset, many=True)
+            serializer = serializers.AccountSerializer(queryset, many=True)
             return Response(serializer.data)
 
 
 class BankListViewSet(viewsets.ModelViewSet):
     queryset = Bank.objects.all()
-    serializer_class = BankSerializer
+    serializer_class = serializers.BankSerializer
 
 
 class AccountListViewSet(viewsets.ModelViewSet):
-    serializer_class = AccountSerializer
+    serializer_class = serializers.AccountSerializer
     queryset = Account.objects.all()
 
     def get_queryset(self):
@@ -47,18 +47,18 @@ class AccountListViewSet(viewsets.ModelViewSet):
 
 class BankListGenericApiview(generics.ListAPIView):
     queryset = Bank.objects.all()
-    serializer_class = BankSerializer
+    serializer_class = serializers.BankSerializer
 
 
 class AccountListGenericApiview(generics.ListAPIView):
     queryset = Account.objects.all()
-    serializer_class = AccountSerializer
+    serializer_class = serializers.AccountSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['user__first_name', 'user__last_name', 'user__username']
 
 
 class RequestAccount(generics.ListAPIView):
-    serializer_class = AccountSerializer
+    serializer_class = serializers.AccountSerializer
 
     def get_queryset(self):
         user = self.request.user
@@ -67,8 +67,8 @@ class RequestAccount(generics.ListAPIView):
 
 
 class CreateBank(generics.CreateAPIView):
-    serializer_class = BankSerializer
+    serializer_class = serializers.BankSerializer
 
 
 class CreateUserAccount(generics.CreateAPIView):
-    serializer_class = AccountSerializer
+    serializer_class = serializers.CreateAccountSerialzer
