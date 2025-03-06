@@ -66,9 +66,10 @@ class CreateBank(generics.CreateAPIView):
 class CreateAccount(generics.CreateAPIView):
     serializer_class = AccountSerializer
     def post(self, request, *args, **kwargs):
-        account_balance = request.data.get('account_balance')
+        account_balance = self.request.data.get('account_balance')
+        bank_id = self.request.data.get("bank")
         user = self.request.user
-        bank = Bank.objects.filter(bank_name = 'UBL').get()
+        bank = Bank.objects.filter(id = bank_id).get()
 
         account = Account(
             user = user,
