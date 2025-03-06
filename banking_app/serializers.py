@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Bank, Account
 from authorization.serializers import UserSerializer
 
+
 class BankSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bank
@@ -11,6 +12,7 @@ class BankSerializer(serializers.ModelSerializer):
 class AccountSerializer(serializers.ModelSerializer):
     bank = BankSerializer()
     user = UserSerializer()
+
     class Meta:
         model = Account
         fields = "__all__"

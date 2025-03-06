@@ -32,6 +32,7 @@ class BankListViewSet(viewsets.ModelViewSet):
     queryset = Bank.objects.all()
     serializer_class = BankSerializer
 
+
 class AccountListViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
     queryset = Account.objects.all()
@@ -53,28 +54,35 @@ class AccountListGenericApiview(generics.ListAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['user__first_name','user__last_name','user__username']
+    search_fields = ['user__first_name', 'user__last_name', 'user__username']
+
 
 class RequestAccount(generics.ListAPIView):
     serializer_class = AccountSerializer
+
     def get_queryset(self):
         user = self.request.user
         queryset = Account.objects.filter(user=user)
         return queryset
+
+
 class CreateBank(generics.CreateAPIView):
     serializer_class = BankSerializer
+
+
 class CreateAccount(generics.CreateAPIView):
     serializer_class = AccountSerializer
+
     def post(self, request, *args, **kwargs):
         account_balance = self.request.data.get('account_balance')
         bank_id = self.request.data.get("bank")
         user = self.request.user
-        bank = Bank.objects.filter(id = bank_id).get()
+        bank = Bank.objects.filter(id=bank_id).get()
 
         account = Account(
-            user = user,
-            bank = bank,
-            account_balance = account_balance
+            user=user,
+            bank=bank,
+            account_balance=account_balance
         )
         serializer = AccountSerializer(account)
         account.save()
@@ -84,4 +92,3 @@ class CreateAccount(generics.CreateAPIView):
         #     "balance": account.account_balance
         # }
         return Response(serializer.data, status=201)
-
