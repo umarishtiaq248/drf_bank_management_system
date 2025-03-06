@@ -72,23 +72,3 @@ class CreateBank(generics.CreateAPIView):
 
 class CreateAccount(generics.CreateAPIView):
     serializer_class = AccountSerializer
-
-    def post(self, request, *args, **kwargs):
-        account_balance = self.request.data.get('account_balance')
-        bank_id = self.request.data.get("bank")
-        user = self.request.user
-        bank = Bank.objects.filter(id=bank_id).get()
-
-        account = Account(
-            user=user,
-            bank=bank,
-            account_balance=account_balance
-        )
-        serializer = AccountSerializer(account)
-        account.save()
-        # response_data = {
-        #     "user": UserSerializer(account.user).data,
-        #     "bank": BankSerializer(account.bank).data,
-        #     "balance": account.account_balance
-        # }
-        return Response(serializer.data, status=201)
