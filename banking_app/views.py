@@ -70,5 +70,5 @@ class CreateBank(generics.CreateAPIView):
     serializer_class = BankSerializer
 
 
-class CreateAccount(generics.CreateAPIView):
+class CreateUserAccount(generics.CreateAPIView):
     serializer_class = AccountSerializer
