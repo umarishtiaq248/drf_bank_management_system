@@ -16,5 +16,9 @@ class Account(models.Model):
     bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="banks")
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='users', null=True)
 
+    class Meta:
+        unique_together = ('user', 'bank')
+
+
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"

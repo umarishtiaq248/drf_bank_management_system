@@ -29,6 +29,12 @@ class CreateAccountSerialzer(serializers.ModelSerializer):
 
 
     def get_user(self):
+        user = self.context['request'].user
+        bank = self.get_bank()
+        if Account.objects.filter(user=user, bank=bank).exists():
+            raise serializers.ValidationError(
+                f"User {user.username} already has an account in the {bank.bank_name} bank"
+            )
         return self.context['request'].user
 
     def get_bank(self):
