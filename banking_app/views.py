@@ -2,9 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets, generics, filters
 from . import serializers
-from authorization.serializers import UserSerializer
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
+from authorization.permissions import IsStaffOrSuperUser
 from .models import Bank, Account
 
 
@@ -71,4 +69,11 @@ class CreateBank(generics.CreateAPIView):
 
 
 class CreateUserAccount(generics.CreateAPIView):
-    serializer_class = serializers.CreateAccountSerialzer
+    serializer_class = serializers.CreateAccountSerializer
+
+class UpdateUserAccount(generics.UpdateAPIView):
+    queryset = Account.objects.all()
+    serializer_class = serializers.UpdateAccountSerializer
+    permission_classes = [IsStaffOrSuperUser]
+    lookup_field = 'id'
+
