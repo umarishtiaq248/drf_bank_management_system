@@ -67,7 +67,6 @@ instance/
 
 # Scrapy stuff:
 .scrapy
-
 # Sphinx documentation
 docs/_build/
 
@@ -169,3 +168,4 @@ cython_debug/
 config/
 # PyPI configuration file
 .pypirc
+/unused.py
