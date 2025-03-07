@@ -20,5 +20,9 @@ urlpatterns = [
     path('api/account-list/generic_apiview/', views.AccountListGenericApiview.as_view(),
          name='account-list-generic_apiview'),
     path('api/request-user/account/', views.RequestAccount.as_view(),
-         name='request-user/account/'),
+         name='request-user_account'),
+    path('api/create-bank/', views.CreateBank.as_view(),
+         name='create-bank'),
+    path('api/create-account/', views.CreateUserAccount.as_view(),
+         name='create-account'),
 ]
