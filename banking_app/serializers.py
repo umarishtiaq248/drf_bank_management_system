@@ -1,4 +1,7 @@
+from django.template.context_processors import request
 from rest_framework import serializers
+from rest_framework.exceptions import PermissionDenied
+
 from .models import Bank, Account
 from authorization.serializers import UserSerializer
 
@@ -42,3 +45,10 @@ class UpdateAccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = "__all__"
 
+    def update(self, instance, validated_data):
+        if instance.user == self.context['request'].user:
+            instance.account_balance = validated_data.get('account_balance', instance.account_balance)
+            instance.save()
+            return instance
+        else:
+            raise PermissionDenied("You are not allowed to update this account's balance.")
