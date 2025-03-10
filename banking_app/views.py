@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework import viewsets, generics, filters
 from .serializers import CreateAccountSerializer, UpdateRequestingUserAccountSerializer, BankSerializer, AccountSerializer
 from .models import Bank, Account
-
-
+from authorization.permissions import SelfUSer
+from rest_framework.permissions import IsAuthenticated
 class BankListApiView(APIView):
     def get(self, request):
         bank_qs = Bank.objects.all()
@@ -73,6 +73,6 @@ class CreateUserAccount(generics.CreateAPIView):
 
 class UpdateRequestingUserAccount(generics.UpdateAPIView):
     serializer_class = UpdateRequestingUserAccountSerializer
-
+    permission_classes = [SelfUSer,IsAuthenticated]
     def get_queryset(self):
         return Account.objects.all()
