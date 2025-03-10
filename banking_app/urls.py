@@ -25,4 +25,6 @@ urlpatterns = [
          name='create-bank'),
     path('api/create-account/', views.CreateUserAccount.as_view(),
          name='create-account'),
+    path('api/update/<int:pk>/account/', views.UpdateAnyUserAccount.as_view(),
+         name='update-any-account'),
 ]

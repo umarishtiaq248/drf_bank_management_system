@@ -34,3 +34,13 @@ class CreateAccountSerialzer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['user'] = self.get_user()
         return super().create(validated_data)
+
+
+class UpdateRequestingUserAccountSerializer(serializers.ModelSerializer):
+    bank = serializers.PrimaryKeyRelatedField(
+        queryset=Bank.objects.all()
+    )
+
+    class Meta:
+        model = Account
+        fields = "__all__"
