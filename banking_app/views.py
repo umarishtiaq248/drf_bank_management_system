@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets, generics, filters
-from .serializers import CreateAccountSerializer, UpdateAccountSerializer, BankSerializer, AccountSerializer
+from .serializers import CreateAccountSerializer, UpdateRequestingUserAccountSerializer, BankSerializer, AccountSerializer
 from .models import Bank, Account
 
 
@@ -71,8 +71,8 @@ class CreateUserAccount(generics.CreateAPIView):
     serializer_class = CreateAccountSerializer
 
 
-class UpdateUserAccount(generics.UpdateAPIView):
-    serializer_class = UpdateAccountSerializer
+class UpdateRequestingUserAccount(generics.UpdateAPIView):
+    serializer_class = UpdateRequestingUserAccountSerializer
 
     def get_queryset(self):
         return Account.objects.all()

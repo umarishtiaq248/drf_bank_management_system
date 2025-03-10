@@ -36,7 +36,7 @@ class CreateAccountSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class UpdateAccountSerializer(serializers.ModelSerializer):
+class UpdateRequestingUserAccountSerializer(serializers.ModelSerializer):
     bank = serializers.PrimaryKeyRelatedField(
         queryset=Bank.objects.all()
     )
