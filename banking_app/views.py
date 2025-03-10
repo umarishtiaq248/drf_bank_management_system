@@ -1,10 +1,18 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import viewsets, generics, filters
-from .serializers import CreateAccountSerializer, UpdateRequestingUserAccountSerializer, BankSerializer, AccountSerializer
-from .models import Bank, Account
-from authorization.permissions import SelfUSer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from authorization.permissions import SelfUser
+from .models import Bank, Account
+from .serializers import (
+    CreateAccountSerializer,
+    UpdateAccountSerializer,
+    BankSerializer,
+    AccountSerializer,
+)
+
+
 class BankListApiView(APIView):
     def get(self, request):
         bank_qs = Bank.objects.all()
@@ -15,7 +23,7 @@ class BankListApiView(APIView):
 class AccountListApiView(APIView):
     def get(self, request):
         queryset = Account.objects.filter(user=request.user)
-        user_name = self.request.query_params.get('name')
+        user_name = self.request.query_params.get("name")
         if user_name:
             account_qs = queryset.filter(user_name__icontains=user_name)
             serializer = AccountSerializer(account_qs, many=True)
@@ -35,7 +43,7 @@ class AccountListViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
 
     def get_queryset(self):
-        user_name = self.request.query_params.get('name')
+        user_name = self.request.query_params.get("name")
         if user_name:
             return self.queryset.filter(user_name__icontains=user_name)
         else:
@@ -51,7 +59,7 @@ class AccountListGenericApiview(generics.ListAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['user__first_name', 'user__last_name', 'user__username']
+    search_fields = ["user__first_name", "user__last_name", "user__username"]
 
 
 class RequestAccount(generics.ListAPIView):
@@ -72,7 +80,8 @@ class CreateUserAccount(generics.CreateAPIView):
 
 
 class UpdateRequestingUserAccount(generics.UpdateAPIView):
-    serializer_class = UpdateRequestingUserAccountSerializer
-    permission_classes = [SelfUSer,IsAuthenticated]
+    serializer_class = UpdateAccountSerializer
+    permission_classes = [SelfUser, IsAuthenticated]
+
     def get_queryset(self):
         return Account.objects.all()

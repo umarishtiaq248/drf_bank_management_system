@@ -1,9 +1,7 @@
-from django.template.context_processors import request
 from rest_framework import serializers
-from rest_framework.exceptions import PermissionDenied
 
-from .models import Bank, Account
 from authorization.serializers import UserSerializer
+from .models import Bank, Account
 
 
 class BankSerializer(serializers.ModelSerializer):
@@ -23,12 +21,11 @@ class AccountSerializer(serializers.ModelSerializer):
 
 class CreateAccountSerializer(serializers.ModelSerializer):
     bank = serializers.PrimaryKeyRelatedField(
-        queryset=Bank.objects.all(),
-        write_only=True
+        queryset=Bank.objects.all(), write_only=True
     )
 
     def create(self, validated_data):
-        validated_data['user'] = self.context['request'].user
+        validated_data["user"] = self.context["request"].user
         return super().create(validated_data)
 
     class Meta:
@@ -36,10 +33,8 @@ class CreateAccountSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class UpdateRequestingUserAccountSerializer(serializers.ModelSerializer):
-    bank = serializers.PrimaryKeyRelatedField(
-        queryset=Bank.objects.all()
-    )
+class UpdateAccountSerializer(serializers.ModelSerializer):
+    bank = serializers.PrimaryKeyRelatedField(queryset=Bank.objects.all())
 
     class Meta:
         model = Account
