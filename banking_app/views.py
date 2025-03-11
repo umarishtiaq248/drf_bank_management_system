@@ -18,6 +18,7 @@ from .serializers import (
 
 
 class BankListApiView(APIView):
+
     def get(self, request):
         bank_qs = Bank.objects.all()
         serializer = BankSerializer(bank_qs, many=True)
@@ -25,6 +26,7 @@ class BankListApiView(APIView):
 
 
 class AccountListApiView(APIView):
+
     def get(self, request):
         queryset = Account.objects.filter(user=request.user)
         user_name = self.request.query_params.get("name")
@@ -38,35 +40,40 @@ class AccountListApiView(APIView):
 
 
 class BankListViewSet(viewsets.ModelViewSet):
-    queryset = Bank.objects.all()
     serializer_class = BankSerializer
+
+    def get_queryset(self):
+        return Bank.objects.all()
 
 
 class AccountListViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
-    queryset = Account.objects.all()
 
     def get_queryset(self):
         user_name = self.request.query_params.get("name")
         if user_name:
-            return self.queryset.filter(user_name__icontains=user_name)
+            return Account.objects.filter(user_name__icontains=user_name)
         else:
-            return self.queryset
+            return Account.objects.all()
 
 
 class BankListGenericApiview(generics.ListAPIView):
-    queryset = Bank.objects.all()
     serializer_class = BankSerializer
+
+    def get_queryset(self):
+        return Bank.objects.all()
 
 
 class AccountListGenericApiview(generics.ListAPIView):
-    queryset = Account.objects.all()
     serializer_class = AccountSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["user__first_name", "user__last_name", "user__username"]
 
+    def get_queryset(self):
+        return Account.objects.all()
 
-class RequestAccount(generics.ListAPIView):
+
+class RequestAccountGenericApiview(generics.ListAPIView):
     serializer_class = AccountSerializer
 
     def get_queryset(self):
@@ -75,49 +82,49 @@ class RequestAccount(generics.ListAPIView):
         return queryset
 
 
-class CreateBank(generics.CreateAPIView):
+class CreateBankGenericApiview(generics.CreateAPIView):
     serializer_class = BankSerializer
 
 
-class CreateUserAccount(generics.CreateAPIView):
+class CreateUserAccountGenericApiview(generics.CreateAPIView):
     serializer_class = CreateAccountSerializer
 
 
-class UpdateAnyUserAccount(generics.UpdateAPIView):
-    serializer_class = UpdateAccountSerializer
+class UpdateAnyUserAccountGenericApiview(generics.UpdateAPIView):
     permission_classes = [IsStaffOrSuperUser]
+    serializer_class = UpdateAccountSerializer
 
     def get_queryset(self):
         return Account.objects.all()
 
 
-class UpdateRequestingUserAccount(generics.UpdateAPIView):
-    serializer_class = UpdateAccountSerializer
+class UpdateRequestingUserAccountGenericApiview(generics.UpdateAPIView):
     permission_classes = [SelfUser, IsAuthenticated]
+    serializer_class = UpdateAccountSerializer
 
     def get_queryset(self):
         return Account.objects.all()
 
 
-class GetDetailOfAnyAccount(generics.RetrieveAPIView):
+class GetDetailOfAnyAccountGenericApiview(generics.RetrieveAPIView):
+    permission_classes = [SelfUser, IsAuthenticated]
     serializer_class = GetAccountSerializer
-    permission_classes = [IsStaffOrSuperUser]
 
     def get_queryset(self):
         return Account.objects.all()
 
 
-class DeleteAnyAccount(generics.DestroyAPIView):
+class DeleteAnyAccountGenericApiview(generics.DestroyAPIView):
+    permission_classes = [SelfUser, IsAuthenticated]
     serializer_class = DeleteAccountSerializer
-    permission_classes = [IsStaffOrSuperUser]
 
     def get_queryset(self):
         return Account.objects.all()
 
 
-class UserAccountManagement(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = AccountCRUDSerializer
+class UserAccountManagementGenericApiview(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsStaffOrSuperUser]
+    serializer_class = AccountCRUDSerializer
 
     def get_queryset(self):
         return Account.objects.all()
