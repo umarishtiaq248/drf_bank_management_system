@@ -1,4 +1,6 @@
 from rest_framework import viewsets, generics, filters
+from authorization.permissions import IsStaffOrSuperUser
+from authorization.serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -77,6 +79,14 @@ class CreateBank(generics.CreateAPIView):
 
 class CreateUserAccount(generics.CreateAPIView):
     serializer_class = CreateAccountSerializer
+
+
+class UpdateAnyUserAccount(generics.UpdateAPIView):
+    serializer_class = UpdateAccountSerializer
+    permission_classes = [IsStaffOrSuperUser]
+
+    def get_queryset(self):
+        return Account.objects.all()
 
 
 class UpdateRequestingUserAccount(generics.UpdateAPIView):

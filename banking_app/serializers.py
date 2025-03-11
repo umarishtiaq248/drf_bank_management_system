@@ -34,7 +34,9 @@ class CreateAccountSerializer(serializers.ModelSerializer):
 
 
 class UpdateAccountSerializer(serializers.ModelSerializer):
-    bank = serializers.PrimaryKeyRelatedField(queryset=Bank.objects.all())
+    bank = serializers.PrimaryKeyRelatedField(
+        queryset=Bank.objects.all()
+    )
 
     class Meta:
         model = Account

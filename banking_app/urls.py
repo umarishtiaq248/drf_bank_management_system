@@ -53,4 +53,9 @@ urlpatterns = [
         views.UpdateRequestingUserAccount.as_view(),
         name="update-account",
     ),
+  path(
+       "api/update/any_user/account_id/<int:pk>/",
+        views.UpdateAnyUserAccount.as_view(),
+        name='update-any-account'
+  ),
 ]
