@@ -5,10 +5,10 @@ from . import views
 
 router = DefaultRouter()
 router.register(
-    "bank-list/viewset", views.BankListViewSet, basename="bank-list-viewset"
+    "viewset/bank-list/", views.BankListViewSet, basename="bank-list-viewset"
 )
 router.register(
-    "account-list/viewset", views.AccountListViewSet, basename="account-list-viewset"
+    "viewset/account-list/", views.AccountListViewSet, basename="account-list-viewset"
 )
 
 urlpatterns = [
@@ -35,42 +35,42 @@ urlpatterns = [
     ),
     path(
         "api/request-user/account/",
-        views.RequestAccount.as_view(),
+        views.RequestAccountGenericApiview.as_view(),
         name="request-user_account",
     ),
     path(
         "api/create-bank/",
-        views.CreateBank.as_view(),
+        views.CreateBankGenericApiview.as_view(),
         name="create-bank"
     ),
     path(
         "api/create-account/",
-        views.CreateUserAccount.as_view(),
+        views.CreateUserAccountGenericApiview.as_view(),
         name="create-account"
     ),
     path(
         "api/update/current_user/account_id/<int:pk>/",
-        views.UpdateRequestingUserAccount.as_view(),
+        views.UpdateRequestingUserAccountGenericApiview.as_view(),
         name="update-account",
     ),
     path(
        "api/update/any_user/account_id/<int:pk>/",
-        views.UpdateAnyUserAccount.as_view(),
+        views.UpdateAnyUserAccountGenericApiview.as_view(),
         name='update-any-account'
     ),
     path(
         "api/get/account/<int:pk>/",
-        views.GetDetailOfAnyAccount.as_view(),
+        views.GetDetailOfAnyAccountGenericApiview.as_view(),
         name="get-account-detail"
     ),
     path(
         "api/delete/account/<int:pk>/",
-        views.DeleteAnyAccount.as_view(),
+        views.DeleteAnyAccountGenericApiview.as_view(),
         name="delete-account"
     ),
     path(
-        "api/account/<int:pk>/",
-        views.UserAccountManagement.as_view(),
+        "api/crud/account/<int:pk>/",
+        views.UserAccountManagementGenericApiview.as_view(),
         name="user-account-management"
     )
 ]

@@ -1,10 +1,10 @@
 from rest_framework import serializers
-
 from authorization.serializers import UserSerializer
 from .models import Bank, Account
 
 
 class BankSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Bank
         fields = "__all__"
@@ -63,6 +63,7 @@ class AccountCRUDSerializer(serializers.ModelSerializer):
     bank = serializers.PrimaryKeyRelatedField(
         queryset=Bank.objects.all()
     )
+
     class Meta:
         model = Account
         fields = "__all__"
