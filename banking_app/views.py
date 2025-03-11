@@ -30,13 +30,12 @@ class AccountListApiView(APIView):
     def get(self, request):
         queryset = Account.objects.filter(user=request.user)
         user_name = self.request.query_params.get("name")
-        if user_name:
-            account_qs = queryset.filter(user_name__icontains=user_name)
-            serializer = AccountSerializer(account_qs, many=True)
-            return Response(serializer.data)
-        else:
+        if not user_name:
             serializer = AccountSerializer(queryset, many=True)
             return Response(serializer.data)
+        account_qs = queryset.filter(user_name__icontains=user_name)
+        serializer = AccountSerializer(account_qs, many=True)
+        return Response(serializer.data)
 
 
 class BankListViewSet(viewsets.ModelViewSet):
@@ -50,11 +49,11 @@ class AccountListViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
 
     def get_queryset(self):
+        queryset = Account.objects.all()
         user_name = self.request.query_params.get("name")
-        if user_name:
-            return Account.objects.filter(user_name__icontains=user_name)
-        else:
-            return Account.objects.all()
+        if not user_name:
+            return queryset
+        return queryset.filter(user_name__icontains=user_name)
 
 
 class BankListGenericApiview(generics.ListAPIView):
