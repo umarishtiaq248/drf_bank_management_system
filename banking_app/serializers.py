@@ -41,3 +41,18 @@ class UpdateAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = "__all__"
+
+
+class GetAccountSerializer(serializers.ModelSerializer):
+    bank = BankSerializer()
+    user = UserSerializer()
+
+    class Meta:
+        model = Account
+        fields = "__all__"
+
+
+class DeleteAccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = "__all__"

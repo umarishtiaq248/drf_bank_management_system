@@ -53,9 +53,20 @@ urlpatterns = [
         views.UpdateRequestingUserAccount.as_view(),
         name="update-account",
     ),
-  path(
+    path(
        "api/update/any_user/account_id/<int:pk>/",
         views.UpdateAnyUserAccount.as_view(),
         name='update-any-account'
-  ),
+    ),
+    path(
+        "api/get/account/<int:pk>/",
+        views.GetDetailOfAnyAccount.as_view(),
+        name="get-account-detail"
+    ),
+path(
+        "api/delete/account/<int:pk>/",
+        views.DeleteAnyAccount.as_view(),
+        name="delete-account"
+    )
+
 ]
