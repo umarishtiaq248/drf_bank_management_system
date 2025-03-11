@@ -7,6 +7,7 @@ from .serializers import LoginSerializer
 
 class LoginView(views.APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
