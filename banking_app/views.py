@@ -1,10 +1,9 @@
 from rest_framework import viewsets, generics, filters
-from authorization.permissions import IsStaffOrSuperUser
-from authorization.serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from authorization.permissions import IsStaffOrSuperUser
 from authorization.permissions import SelfUser
 from .models import Bank, Account
 from .serializers import (
@@ -12,6 +11,7 @@ from .serializers import (
     UpdateAccountSerializer,
     BankSerializer,
     AccountSerializer,
+    AccountCRUDSerializer
 )
 
 
@@ -92,6 +92,13 @@ class UpdateAnyUserAccount(generics.UpdateAPIView):
 class UpdateRequestingUserAccount(generics.UpdateAPIView):
     serializer_class = UpdateAccountSerializer
     permission_classes = [SelfUser, IsAuthenticated]
+
+    def get_queryset(self):
+        return Account.objects.all()
+
+class UserAccountManagement(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AccountCRUDSerializer
+    permission_classes = [IsStaffOrSuperUser]
 
     def get_queryset(self):
         return Account.objects.all()

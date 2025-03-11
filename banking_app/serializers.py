@@ -41,3 +41,12 @@ class UpdateAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = "__all__"
+
+class AccountCRUDSerializer(serializers.ModelSerializer):
+    bank = serializers.PrimaryKeyRelatedField(
+        queryset=Bank.objects.all()
+    )
+
+    class Meta:
+        model = Account
+        fields = "__all__"
