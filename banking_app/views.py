@@ -11,6 +11,8 @@ from .serializers import (
     UpdateAccountSerializer,
     BankSerializer,
     AccountSerializer,
+    GetAccountSerializer,
+    DeleteAccountSerializer,
     AccountCRUDSerializer
 )
 
@@ -95,6 +97,23 @@ class UpdateRequestingUserAccount(generics.UpdateAPIView):
 
     def get_queryset(self):
         return Account.objects.all()
+
+
+class GetDetailOfAnyAccount(generics.RetrieveAPIView):
+    serializer_class = GetAccountSerializer
+    permission_classes = [IsStaffOrSuperUser]
+
+    def get_queryset(self):
+        return Account.objects.all()
+
+
+class DeleteAnyAccount(generics.DestroyAPIView):
+    serializer_class = DeleteAccountSerializer
+    permission_classes = [IsStaffOrSuperUser]
+
+    def get_queryset(self):
+        return Account.objects.all()
+
 
 class UserAccountManagement(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AccountCRUDSerializer
