@@ -63,10 +63,14 @@ urlpatterns = [
         views.GetDetailOfAnyAccount.as_view(),
         name="get-account-detail"
     ),
-path(
+    path(
         "api/delete/account/<int:pk>/",
         views.DeleteAnyAccount.as_view(),
         name="delete-account"
+    ),
+    path(
+        "api/account/<int:pk>/",
+        views.UserAccountManagement.as_view(),
+        name="user-account-management"
     )
-
 ]
