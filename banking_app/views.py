@@ -71,7 +71,7 @@ class AccountListGenericApiview(generics.ListAPIView):
     filter_backends = [filters.SearchFilter,filters.OrderingFilter,DjangoFilterBackend]
     search_fields = ["user__first_name", "user__last_name", "user__username"]
     ordering_fields = ["user","bank"]
-    # filterset_fields = ["user","bank","bank__is_islamic"]
+    # filterset_fields = ["user_id","bank_id","bank__is_islamic"]
     filterset_class = AccountFilter
 
     def get_queryset(self):
