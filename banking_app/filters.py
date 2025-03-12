@@ -5,10 +5,10 @@ from .models import Account
 
 class AccountFilter(django_filters.FilterSet):
     is_non_zero_balance = django_filters.BooleanFilter(
-        field_name='account_balance',
-        lookup_expr='gt',
-        label='Non-zero balance',
-        method='filter_non_zero_balance'
+        field_name="account_balance",
+        lookup_expr="gt",
+        label="Non-zero balance",
+        method="filter_non_zero_balance"
     )
 
     def filter_non_zero_balance(self, queryset, name, value):
@@ -18,4 +18,4 @@ class AccountFilter(django_filters.FilterSet):
 
     class Meta:
         model = Account
-        fields = ['is_non_zero_balance']
+        fields = ["is_non_zero_balance","user_id","bank_id","bank__is_islamic"]
