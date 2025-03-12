@@ -1,5 +1,6 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics, filters
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -64,9 +65,12 @@ class BankListGenericApiview(generics.ListAPIView):
 
 
 class AccountListGenericApiview(generics.ListAPIView):
+    permission_classes = [AllowAny]
     serializer_class = AccountSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter,filters.OrderingFilter,DjangoFilterBackend]
     search_fields = ["user__first_name", "user__last_name", "user__username"]
+    ordering_fields = ["user","bank"]
+    filterset_fields = ["user","bank","bank__is_islamic"]
 
     def get_queryset(self):
         return Account.objects.all()
