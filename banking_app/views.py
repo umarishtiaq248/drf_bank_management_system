@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 
 from authorization.permissions import IsStaffOrSuperUser
 from authorization.permissions import SelfUser
+from .filters import AccountFilter
 from .models import Bank, Account
 from .serializers import (
     CreateAccountSerializer,
@@ -70,7 +71,8 @@ class AccountListGenericApiview(generics.ListAPIView):
     filter_backends = [filters.SearchFilter,filters.OrderingFilter,DjangoFilterBackend]
     search_fields = ["user__first_name", "user__last_name", "user__username"]
     ordering_fields = ["user","bank"]
-    filterset_fields = ["user","bank","bank__is_islamic"]
+    # filterset_fields = ["user_id","bank_id","bank__is_islamic"]
+    filterset_class = AccountFilter
 
     def get_queryset(self):
         return Account.objects.all()
