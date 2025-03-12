@@ -18,4 +18,4 @@ class AccountFilter(django_filters.FilterSet):
 
     class Meta:
         model = Account
-        fields = ["is_non_zero_balance","user_id","bank_id","bank__is_islamic"]
+        fields = ["is_non_zero_balance"]
